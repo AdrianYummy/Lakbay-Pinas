@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lakbay Pinas</title>
+        <link rel="icon" href="C:\Users\A_Jos\OneDrive\Dokumen\Lakbay Pinas\Pics\safari_8405005.png" type="image/png">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+    
+    <!-- External CSS for Navbar (assuming 'navbarcss.css' exists) -->
+    <link rel="stylesheet" href="navbarcss.css"> 
+    <!-- External JavaScript for Region Slider -->
+    <script src="jsregion.js" defer></script> 
+
+    <!-- Tailwind CSS CDN (kept for general utility, though custom CSS is primary) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* Base styles */
+        * {
+            box-sizing: border-box;
+        }
+
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%; /* Ensure html and body take full height */
+            overflow-x: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+            scroll-behavior: smooth;
+            background-color: #ffffff; /* Consistent white background */
+        }
+
+        /* NAVBAR styles - Copied for consistency */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 25px;
+            padding-bottom: 15px;
+            width: 100vw;
+            background-color: aliceblue;
+            position: fixed;
+            top: 0;
+            box-shadow: 10px 10px 12px rgba(67, 67, 68, 0.227);
+            z-index: 1000;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            height: 40px;
+        }
+
+        .search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-bar-input {
+            padding: 6px 35px 6px 30px;
+            border: 1px solid;
+            border-radius: 20px;
+            font-size: 14px;
+            width: 500px;
+            background-color: #ffffff;
+        }
+
+        .search-icon, .mic-icon {
+            position: absolute;
+            height: 16px;
+            width: 16px;
+            opacity: 0.6;
+        }
+
+        .search-icon {
+            left: 8px;
+        }
+
+        .mic-icon {
+            right: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 65px;
+            margin-left: auto;
+            margin-right: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-size: 13px;
+            color: #545454;
+            border-bottom: 2px solid transparent;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .nav-links a.active {
+            border-bottom: 2px solid #4a977e;
+            transform: scale(1.05);
+        }
+
+        .nav-links a:hover {
+            border-bottom: 2px solid #4a977e;
+            transform: scale(1.1);
+        }
+
+        .nav-icon {
+            height: 20px;
+            width: 20px;
+        }
+
+        /* REGION SLIDER SECTION STYLES */
+        .region-section {
+            position: absolute; /* Changed to absolute to take full screen below navbar */
+            top: 0; /* Align to the very top */
+            left: 0;
+            width: 100vw; /* Take full viewport width */
+            height: 100vh; /* Take full viewport height */
+            padding: 50px 20px; 
+            text-align: center;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-top: calc(70px + 50px); /* Add navbar height (70px approx) + section padding (50px) for initial content offset */
+        }
+
+        /* Video Background Styling */
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Corrected to 'cover' to fill without distortion */
+            z-index: -2; /* Behind all content */
+            filter: brightness(0.7); /* Darken video for better text readability */
+            transition: opacity 1s ease-in-out; /* Smooth fade for video source change */
+            opacity: 1; /* Start visible */
+        }
+
+        .dark-overlay-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4); /* Dark overlay for text readability */
+            z-index: -1; /* Above video, below content */
+        }
+
+
+        .main-title-region {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #ffffff; /* Changed to white for better contrast on dark video */
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Stronger shadow for contrast */
+        }
+
+        .slider-container {
+            /* Adjusted perspective for a more pronounced 3D rotation */
+            perspective: 1200px; 
+            width: 100%;
+            max-width: 700px;
+            height: 350px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .region-card-wrapper {
+            position: absolute;
+            width: 300px; /* Fixed width for individual cards */
+            height: 250px; /* Fixed height for individual cards */
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white for cards */
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            /* Smoother ease-out transition for all transform properties */
+            transition: transform 0.7s cubic-bezier(0.25, 0.1, 0.25, 1), /* Custom cubic-bezier for smoother motion */
+                                opacity 0.7s ease-out, 
+                                filter 0.7s ease-out, 
+                                z-index 0.7s step-end;
+            cursor: pointer;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column; /* Changed to column to stack image and description */
+            justify-content: flex-start; /* Align items to the start of the column */
+            align-items: center;
+            flex-shrink: 0;
+            /* Establish 3D context for nested transforms */
+            transform-style: preserve-3d; 
+            backface-visibility: hidden; /* Prevent flickering on rotation */
+        }
+
+        /* Card States for region slider - refined for smoother carousel rotation */
+        .region-card-wrapper.active {
+            opacity: 1;
+            transform: rotateY(0deg) translateX(0) translateZ(200px) scale(1.15); /* Bring active card further forward and larger */
+            filter: brightness(100%);
+            z-index: 10;
+        }
+
+        .region-card-wrapper.prev {
+            opacity: 0.8; /* Keep slightly visible */
+            transform: rotateY(60deg) translateX(-300px) translateZ(-150px) scale(0.9); /* More rotation, further left and back */
+            filter: brightness(70%);
+            z-index: 5;
+        }
+
+        .region-card-wrapper.next {
+            opacity: 0.8; /* Keep slightly visible */
+            transform: rotateY(-60deg) translateX(300px) translateZ(-150px) scale(0.9); /* More rotation, further right and back */
+            filter: brightness(70%);
+            z-index: 5;
+        }
+
+        /* Cards far off-screen (mostly hidden) for region slider - adjusted for more continuous feel */
+        .region-card-wrapper.far-prev {
+            opacity: 0.2; /* Slightly visible to hint at rotation */
+            transform: rotateY(120deg) translateX(-500px) translateZ(-300px) scale(0.8); /* Even further rotated and back */
+            filter: brightness(40%);
+            z-index: 1;
+            pointer-events: none; /* Disable interaction when hidden */
+        }
+
+        .region-card-wrapper.far-next {
+            opacity: 0.2; /* Slightly visible to hint at rotation */
+            transform: rotateY(-120deg) translateX(500px) translateZ(-300px) scale(0.8); /* Even further rotated and back */
+            filter: brightness(40%);
+            z-index: 1;
+            pointer-events: none; /* Disable interaction when hidden */
+        }
+
+        .region-image {
+            width: 100%;
+            height: 100%; /* Make image fill the whole card */
+            object-fit: cover;
+            border-radius: 1.5rem; /* Apply full border radius to image */
+        }
+
+        .region-description {
+            position: absolute; /* Position description over the bottom of the card */
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px 15px; /* Padding for readability */
+            background-color: transparent; /* No background color */
+            color: #ffffff; /* White text for description */
+            font-size: 0.85rem; /* Smaller font size for description */
+            text-align: center;
+            /* Removed border-radius as the background is transparent and handled by the image's border-radius */
+            z-index: 2; /* Ensure it's above the image */
+            opacity: 0; /* Hidden by default */
+            transition: opacity 0.3s ease-in-out; /* Smooth fade in/out */
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Shadow for readability against image */
+        }
+
+        .region-card-wrapper.active .region-description {
+            opacity: 1; /* Show description only for active card */
+        }
+
+
+        /* Bottom Region Name Display and Navigation Buttons for region slider */
+        .bottom-nav-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 500px;
+            padding: 0 1rem;
+            margin: 2rem auto 0 auto;
+            position: relative; /* Ensure it's above video */
+            z-index: 1;
+        }
+
+        .region-name-display {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            text-align: center;
+            padding: 0.8rem 2rem;
+            background-color: #ffffff;
+            border-radius: 9999px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: background-color 0.3s ease;
+            min-width: 150px;
+            margin: 0 1rem;
+            text-shadow: none; /* Remove text shadow as background is now consistent white */
+        }
+
+        .nav-button-region {
+            background: none;
+            border: none;
+            color: #ffffff; /* Changed to white for contrast on video */
+            font-size: 3rem;
+            cursor: pointer;
+            outline: none;
+            transition: color 0.2s ease, transform 0.2s ease;
+            padding: 0 0.5rem;
+            line-height: 1;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Shadow for readability */
+        }
+
+        .nav-button-region:hover {
+            color: #eee;
+            transform: scale(1.1);
+        }
+
+        .nav-button-region:active {
+            transform: scale(0.9);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+            .search-bar-input {
+                width: 350px;
+            }
+            .nav-links {
+                gap: 40px;
+                margin-right: 20px;
+            }
+            .main-title-region {
+                font-size: 2.5rem;
+            }
+            .slider-container {
+                max-width: 600px;
+                height: 300px;
+                perspective: 1000px; /* Adjust perspective for smaller screens */
+            }
+            .region-card-wrapper {
+                width: 250px;
+                height: 200px;
+            }
+            .region-card-wrapper.active {
+                transform: rotateY(0deg) translateX(0) translateZ(150px) scale(1.1);
+            }
+            .region-card-wrapper.prev {
+                transform: rotateY(50deg) translateX(-200px) translateZ(-70px) scale(0.9);
+            }
+            .region-card-wrapper.next {
+                transform: rotateY(-50deg) translateX(200px) translateZ(-70px) scale(0.9);
+            }
+            .region-card-wrapper.far-prev {
+                transform: rotateY(100deg) translateX(-350px) translateZ(-150px) scale(0.7);
+            }
+            .region-card-wrapper.far-next {
+                transform: rotateY(-100deg) translateX(350px) translateZ(-150px) scale(0.7);
+            }
+            .region-image {
+                height: 100%; /* Make image fill the whole card */
+            }
+            .region-description {
+                font-size: 0.8rem;
+                padding: 8px 12px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 15px;
+            }
+            .logo-section {
+                width: 100%;
+                justify-content: center;
+                margin-bottom: 15px;
+            }
+            .search-bar-input {
+                width: 100%;
+                max-width: 400px;
+            }
+            .nav-links {
+                width: 100%;
+                justify-content: space-around;
+                margin-top: 15px;
+                margin-right: 0;
+            }
+            .nav-links a {
+                margin-left: 0;
+                gap: 5px;
+            }
+
+            .region-section {
+                margin-top: 150px; /* More space for wrapped navbar */
+            }
+            .main-title-region {
+                font-size: 2.2rem;
+            }
+            .slider-container {
+                height: 280px;
+                max-width: 90%;
+                perspective: 800px; /* Further adjust for smaller screens */
+            }
+            .region-card-wrapper {
+                width: 220px;
+                height: 180px;
+                border-radius: 1rem;
+            }
+            .region-card-wrapper.active {
+                transform: rotateY(0deg) translateX(0) translateZ(100px) scale(1.1);
+            }
+            .region-card-wrapper.prev {
+                transform: rotateY(55deg) translateX(-150px) translateZ(-70px) scale(0.9);
+            }
+            .region-card-wrapper.next {
+                transform: rotateY(-55deg) translateX(150px) translateZ(-70px) scale(0.9);
+            }
+            .region-card-wrapper.far-prev {
+                transform: rotateY(110deg) translateX(-280px) translateZ(-120px) scale(0.7);
+            }
+            .region-card-wrapper.far-next {
+                transform: rotateY(-110deg) translateX(280px) translateZ(-120px) scale(0.7);
+            }
+            .region-name-display {
+                font-size: 1.2rem;
+                padding: 0.6rem 1.5rem;
+            }
+            .nav-button-region {
+                font-size: 2.5rem;
+            }
+            .region-image {
+                height: 100%; /* Make image fill the whole card */
+            }
+            .region-description {
+                font-size: 0.75rem;
+                padding: 6px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 10px;
+            }
+            .search-bar-input {
+                font-size: 12px;
+                padding: 5px 30px 5px 25px;
+            }
+            .search-icon, .mic-icon {
+                height: 14px;
+                width: 14px;
+            }
+            .nav-links {
+                font-size: 11px;
+                gap: 20px;
+            }
+            .nav-icon {
+                height: 16px;
+                width: 16px;
+            }
+
+            .region-section {
+                margin-top: 130px;
+            }
+            .main-title-region {
+                font-size: 1.8rem;
+            }
+            .slider-container {
+                height: 200px;
+                perspective: 600px; /* Even smaller perspective */
+            }
+            .region-card-wrapper {
+                width: 180px;
+                height: 140px;
+                border-radius: 0.75rem;
+            }
+            .region-card-wrapper.active {
+                transform: rotateY(0deg) translateX(0) translateZ(80px) scale(1.1);
+            }
+            .region-card-wrapper.prev {
+                transform: rotateY(60deg) translateX(-120px) translateZ(-50px) scale(0.85);
+            }
+            .region-card-wrapper.next {
+                transform: rotateY(-60deg) translateX(120px) translateZ(-50px) scale(0.85);
+            }
+            .region-card-wrapper.far-prev {
+                transform: rotateY(120deg) translateX(-220px) translateZ(-100px) scale(0.65);
+            }
+            .region-card-wrapper.far-next {
+                transform: rotateY(-120deg) translateX(220px) translateZ(-100px) scale(0.65);
+            }
+            .region-name-display {
+                font-size: 1rem;
+                padding: 0.5rem 1rem;
+            }
+            .nav-button-region {
+                font-size: 2rem;
+            }
+            .region-image {
+                height: 100%; /* Make image fill the whole card */
+            }
+            .region-description {
+                font-size: 0.65rem;
+                padding: 4px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <div class="logo-section">
+            <a href="#profile">
+                <img src="C:\Users\A_Jos\OneDrive\Dokumen\Lakbay Pinas\Pics\safari_8405005.png" alt="Logo" class="logo" onerror="this.onerror=null; this.src='https://placehold.co/40x40/ccc/000?text=Logo';">
+            </a>
+            <div class="search-wrapper">
+                <img src="C:\Users\A_Jos\OneDrive\Dokumen\Lakbay Pinas\Pics\magnifying-glass.png" class="search-icon" alt="Search Icon" onerror="this.onerror=null; this.src='https://placehold.co/16x16/ccc/000?text=S';">
+                <input type="text" class="search-bar" placeholder="Where do you want to go?">
+                <img src="C:\Users\A_Jos\OneDrive\Dokumen\Lakbay Pinas\Pics\microphone.png" class="mic-icon" alt="Mic Icon" onerror="this.onerror=null; this.src='https://placehold.co/16x16/ccc/000?text=M';">
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="#">
+                <img src="C:\Users\A_Jos\OneDrive\Dokumen\Lakbay Pinas\Pics\heart (1).png" alt="Icon" class="nav-icon" onerror="this.onerror=null; this.src='https://placehold.co/20x20/ccc/000?text=H';">
+            </a>
+            <a href="homepage.html">Home</a>
+            <a href="#">Places to See</a>
+            <a href="#">Profile</a>
+        </div>
+    </div>
+
+    <!-- REGION SELECTION SLIDER SECTION -->
+    <div class="region-section" id="region-section">
+        <!-- Video Background Element -->
+        <video id="backgroundVideo" class="video-background" autoplay loop muted playsinline></video>
+        <!-- Dark Overlay for readability over video -->
+        <div class="dark-overlay-video"></div>
+
+        <h1 class="main-title-region">Select which Region</h1>
+
+        <div class="slider-container">
+            <!-- Region Cards will be inserted here by JavaScript -->
+        </div>
+
+        <div class="bottom-nav-area">
+            <button id="leftButton" class="nav-button-region">‹</button>
+            <span id="regionNameDisplay" class="region-name-display"></span>
+            <button id="rightButton" class="nav-button-region">›</button>
+        </div>
+    </div>
+
+</body>
+</html>
