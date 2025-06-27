@@ -13,14 +13,12 @@
     
     <!-- External CSS for Navbar (assuming 'navbarcss.css' exists) -->
     <link rel="stylesheet" href="navbarcss.css"> 
-    <!-- External JavaScript for Region Slider -->
     <script src="jsregion.js" defer></script> 
 
-    <!-- Tailwind CSS CDN (kept for general utility, though custom CSS is primary) -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
-        /* Base styles */
+       
         * {
             box-sizing: border-box;
         }
@@ -32,14 +30,13 @@
         html, body {
             margin: 0;
             padding: 0;
-            height: 100%; /* Ensure html and body take full height */
+            height: 100%; 
             overflow-x: hidden;
             font-family: Arial, Helvetica, sans-serif;
             scroll-behavior: smooth;
-            background-color: #ffffff; /* Consistent white background */
+            background-color: #ffffff; 
         }
 
-        /* NAVBAR styles - Copied for consistency */
         .navbar {
             display: flex;
             align-items: center;
@@ -130,11 +127,11 @@
 
         /* REGION SLIDER SECTION STYLES */
         .region-section {
-            position: absolute; /* Changed to absolute to take full screen below navbar */
-            top: 0; /* Align to the very top */
+            position: absolute; 
+            top: 0; 
             left: 0;
-            width: 100vw; /* Take full viewport width */
-            height: 100vh; /* Take full viewport height */
+            width: 100vw; 
+            height: 100vh; 
             padding: 50px 20px; 
             text-align: center;
             z-index: 1;
@@ -142,21 +139,20 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding-top: calc(70px + 50px); /* Add navbar height (70px approx) + section padding (50px) for initial content offset */
+            padding-top: calc(70px + 50px); 
         }
 
-        /* Video Background Styling */
         .video-background {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Corrected to 'cover' to fill without distortion */
-            z-index: -2; /* Behind all content */
-            filter: brightness(0.7); /* Darken video for better text readability */
-            transition: opacity 1s ease-in-out; /* Smooth fade for video source change */
-            opacity: 1; /* Start visible */
+            object-fit: cover; 
+            z-index: -2; 
+            filter: brightness(0.7); 
+            transition: opacity 1s ease-in-out;
+            opacity: 1; 
         }
 
         .dark-overlay-video {
@@ -165,8 +161,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.4); /* Dark overlay for text readability */
-            z-index: -1; /* Above video, below content */
+            background-color: rgba(0, 0, 0, 0.4); 
+            z-index: -1;
         }
 
 
@@ -174,13 +170,13 @@
             font-family: 'Archivo Black', sans-serif;
             font-size: 2.8rem;
             font-weight: 800;
-            color: #ffffff; /* Changed to white for better contrast on dark video */
+            color: #ffffff;
             margin-bottom: 2rem;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Stronger shadow for contrast */
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
         }
 
         .slider-container {
-            /* Adjusted perspective for a more pronounced 3D rotation */
+         
             perspective: 1200px; 
             width: 100%;
             max-width: 700px;
@@ -194,98 +190,95 @@
 
         .region-card-wrapper {
             position: absolute;
-            width: 300px; /* Fixed width for individual cards */
-            height: 250px; /* Fixed height for individual cards */
-            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white for cards */
+            width: 300px; 
+            height: 250px; 
+            background-color: rgba(255, 255, 255, 0.9);
             border-radius: 1.5rem;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
             opacity: 0;
-            /* Smoother ease-out transition for all transform properties */
-            transition: transform 0.7s cubic-bezier(0.25, 0.1, 0.25, 1), /* Custom cubic-bezier for smoother motion */
+            transition: transform 0.7s cubic-bezier(0.25, 0.1, 0.25, 1), 
                                 opacity 0.7s ease-out, 
                                 filter 0.7s ease-out, 
                                 z-index 0.7s step-end;
             cursor: pointer;
             overflow: hidden;
             display: flex;
-            flex-direction: column; /* Changed to column to stack image and description */
-            justify-content: flex-start; /* Align items to the start of the column */
+            flex-direction: column; 
+            justify-content: flex-start; 
             align-items: center;
             flex-shrink: 0;
-            /* Establish 3D context for nested transforms */
             transform-style: preserve-3d; 
-            backface-visibility: hidden; /* Prevent flickering on rotation */
+            backface-visibility: hidden; 
         }
 
-        /* Card States for region slider - refined for smoother carousel rotation */
+        
         .region-card-wrapper.active {
             opacity: 1;
-            transform: rotateY(0deg) translateX(0) translateZ(200px) scale(1.15); /* Bring active card further forward and larger */
+            transform: rotateY(0deg) translateX(0) translateZ(200px) scale(1.15); 
             filter: brightness(100%);
             z-index: 10;
         }
 
         .region-card-wrapper.prev {
-            opacity: 0.8; /* Keep slightly visible */
-            transform: rotateY(60deg) translateX(-300px) translateZ(-150px) scale(0.9); /* More rotation, further left and back */
+            opacity: 0.8; 
+            transform: rotateY(60deg) translateX(-300px) translateZ(-150px) scale(0.9); 
             filter: brightness(70%);
             z-index: 5;
         }
 
         .region-card-wrapper.next {
-            opacity: 0.8; /* Keep slightly visible */
-            transform: rotateY(-60deg) translateX(300px) translateZ(-150px) scale(0.9); /* More rotation, further right and back */
+            opacity: 0.8;
+            transform: rotateY(-60deg) translateX(300px) translateZ(-150px) scale(0.9);
             filter: brightness(70%);
             z-index: 5;
         }
 
-        /* Cards far off-screen (mostly hidden) for region slider - adjusted for more continuous feel */
+       
         .region-card-wrapper.far-prev {
-            opacity: 0.2; /* Slightly visible to hint at rotation */
-            transform: rotateY(120deg) translateX(-500px) translateZ(-300px) scale(0.8); /* Even further rotated and back */
+            opacity: 0.2; 
+            transform: rotateY(120deg) translateX(-500px) translateZ(-300px) scale(0.8); 
             filter: brightness(40%);
             z-index: 1;
-            pointer-events: none; /* Disable interaction when hidden */
+            pointer-events: none; 
         }
 
         .region-card-wrapper.far-next {
-            opacity: 0.2; /* Slightly visible to hint at rotation */
-            transform: rotateY(-120deg) translateX(500px) translateZ(-300px) scale(0.8); /* Even further rotated and back */
+            opacity: 0.2; 
+            transform: rotateY(-120deg) translateX(500px) translateZ(-300px) scale(0.8); 
             filter: brightness(40%);
             z-index: 1;
-            pointer-events: none; /* Disable interaction when hidden */
+            pointer-events: none; 
         }
 
         .region-image {
             width: 100%;
-            height: 100%; /* Make image fill the whole card */
+            height: 100%; 
             object-fit: cover;
-            border-radius: 1.5rem; /* Apply full border radius to image */
+            border-radius: 1.5rem; 
         }
 
         .region-description {
-            position: absolute; /* Position description over the bottom of the card */
+            position: absolute; 
             bottom: 0;
             left: 0;
             width: 100%;
-            padding: 10px 15px; /* Padding for readability */
-            background-color: transparent; /* No background color */
-            color: #ffffff; /* White text for description */
-            font-size: 0.85rem; /* Smaller font size for description */
+            padding: 10px 15px; 
+            background-color: transparent; 
+            color: #ffffff;
+            font-size: 0.85rem;
             text-align: center;
-            /* Removed border-radius as the background is transparent and handled by the image's border-radius */
-            z-index: 2; /* Ensure it's above the image */
-            opacity: 0; /* Hidden by default */
-            transition: opacity 0.3s ease-in-out; /* Smooth fade in/out */
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Shadow for readability against image */
+            z-index: 2; 
+            opacity: 0; 
+            transition: opacity 0.3s ease-in-out;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); 
         }
 
         .region-card-wrapper.active .region-description {
-            opacity: 1; /* Show description only for active card */
+            opacity: 1; 
         }
 
 
-        /* Bottom Region Name Display and Navigation Buttons for region slider */
+       
         .bottom-nav-area {
             display: flex;
             align-items: center;
@@ -294,7 +287,7 @@
             max-width: 500px;
             padding: 0 1rem;
             margin: 2rem auto 0 auto;
-            position: relative; /* Ensure it's above video */
+            position: relative;
             z-index: 1;
         }
 
@@ -310,20 +303,20 @@
             transition: background-color 0.3s ease;
             min-width: 150px;
             margin: 0 1rem;
-            text-shadow: none; /* Remove text shadow as background is now consistent white */
+            text-shadow: none; 
         }
 
         .nav-button-region {
             background: none;
             border: none;
-            color: #ffffff; /* Changed to white for contrast on video */
+            color: #ffffff; 
             font-size: 3rem;
             cursor: pointer;
             outline: none;
             transition: color 0.2s ease, transform 0.2s ease;
             padding: 0 0.5rem;
             line-height: 1;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Shadow for readability */
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); 
         }
 
         .nav-button-region:hover {
@@ -353,7 +346,7 @@
             .slider-container {
                 max-width: 600px;
                 height: 300px;
-                perspective: 1000px; /* Adjust perspective for smaller screens */
+                perspective: 1000px; 
             }
             .region-card-wrapper {
                 width: 250px;
@@ -375,7 +368,7 @@
                 transform: rotateY(-100deg) translateX(350px) translateZ(-150px) scale(0.7);
             }
             .region-image {
-                height: 100%; /* Make image fill the whole card */
+                height: 100%; 
             }
             .region-description {
                 font-size: 0.8rem;
@@ -410,7 +403,7 @@
             }
 
             .region-section {
-                margin-top: 150px; /* More space for wrapped navbar */
+                margin-top: 150px; 
             }
             .main-title-region {
                 font-size: 2.2rem;
@@ -418,7 +411,7 @@
             .slider-container {
                 height: 280px;
                 max-width: 90%;
-                perspective: 800px; /* Further adjust for smaller screens */
+                perspective: 800px; 
             }
             .region-card-wrapper {
                 width: 220px;
@@ -448,7 +441,7 @@
                 font-size: 2.5rem;
             }
             .region-image {
-                height: 100%; /* Make image fill the whole card */
+                height: 100%;
             }
             .region-description {
                 font-size: 0.75rem;
@@ -485,7 +478,7 @@
             }
             .slider-container {
                 height: 200px;
-                perspective: 600px; /* Even smaller perspective */
+                perspective: 600px; 
             }
             .region-card-wrapper {
                 width: 180px;
@@ -515,7 +508,7 @@
                 font-size: 2rem;
             }
             .region-image {
-                height: 100%; /* Make image fill the whole card */
+                height: 100%;
             }
             .region-description {
                 font-size: 0.65rem;
@@ -550,15 +543,12 @@
 
     <!-- REGION SELECTION SLIDER SECTION -->
     <div class="region-section" id="region-section">
-        <!-- Video Background Element -->
         <video id="backgroundVideo" class="video-background" autoplay loop muted playsinline></video>
-        <!-- Dark Overlay for readability over video -->
         <div class="dark-overlay-video"></div>
 
         <h1 class="main-title-region">Select which Region</h1>
 
         <div class="slider-container">
-            <!-- Region Cards will be inserted here by JavaScript -->
         </div>
 
         <div class="bottom-nav-area">
