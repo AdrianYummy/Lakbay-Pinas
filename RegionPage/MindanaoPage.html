@@ -11,11 +11,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
     
-    <!-- External CSS for Navbar (assuming 'navbarcss.css' exists) -->
     <link rel="stylesheet" href="navbarcss.css"> 
 
     <style>
-        /* Base styles */
         * {
             box-sizing: border-box;
         }
@@ -30,11 +28,10 @@
             min-height: 100%;
             overflow-x: hidden;
             font-family: Arial, Helvetica, sans-serif;
-            background-color: #ffffff; /* Consistent white background */
+            background-color: #ffffff;
             scroll-behavior: smooth;
         }
 
-        /* NAVBAR styles - Copied for consistency */
         .navbar {
             display: flex;
             align-items: center;
@@ -123,9 +120,8 @@
             width: 20px;
         }
 
-        /* Page specific styles for Cities List */
         .cities-content {
-            margin-top: 95px; /* Clear fixed navbar */
+            margin-top: 95px; 
             padding: 40px 20px;
             text-align: center;
         }
@@ -134,22 +130,21 @@
             font-family: 'Archivo Black', sans-serif;
             font-size: 2.8rem;
             font-weight: 800;
-            color: #333; /* Dark color for main titles on white background */
+            color: #333; 
             margin-bottom: 3rem;
         }
 
         .city-grid {
             display: grid;
-            /* Adjusted for 6 columns on large screens */
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Smaller minmax to fit more columns */
-            gap: 30px; /* Space between cards */
-            max-width: 1200px; /* Max width for the grid */
-            margin: 0 auto; /* Center the grid */
-            padding-bottom: 50px; /* Space at the bottom */
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+            gap: 30px; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding-bottom: 50px; 
         }
 
         .city-card {
-            background-color: aliceblue; /* Light blue background for cards */
+            background-color: aliceblue; 
             border-radius: 1.5rem;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             overflow: hidden;
@@ -157,7 +152,7 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: flex;
             flex-direction: column;
-            height: 100%; /* Ensure cards fill grid cell height */
+            height: 100%; 
         }
 
         .city-card:hover {
@@ -167,7 +162,7 @@
 
         .city-card-image-wrapper {
             width: 100%;
-            height: 200px; /* Fixed height for images */
+            height: 200px; 
             overflow: hidden;
             border-top-left-radius: 1.5rem;
             border-top-right-radius: 1.5rem;
@@ -186,7 +181,7 @@
 
         .city-card-content {
             padding: 1.5rem;
-            flex-grow: 1; /* Allows content area to expand */
+            flex-grow: 1; 
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -195,7 +190,7 @@
         .city-card h2 {
             font-family: 'Archivo Black', sans-serif;
             font-size: 1.8rem;
-            color: #4a977e; /* Green color for city titles */
+            color: #4a977e; 
             margin-top: 0;
             margin-bottom: 0.8rem;
         }
@@ -205,7 +200,7 @@
             line-height: 1.6;
             color: #545454;
             margin-bottom: 1.5rem;
-            flex-grow: 1; /* Allow paragraph to take available space */
+            flex-grow: 1; 
         }
 
         .city-card-link {
@@ -219,7 +214,7 @@
             font-weight: bold;
             transition: background-color 0.3s, transform 0.2s;
             text-align: center;
-            align-self: flex-start; /* Align link to the start if in a flex column */
+            align-self: flex-start; 
         }
 
         .city-card-link:hover {
@@ -228,10 +223,9 @@
         }
 
 
-        /* Responsive adjustments for cities page */
-        @media (max-width: 1200px) { /* Adjusted breakpoint for 4-5 columns */
+        @media (max-width: 1200px) { 
             .city-grid {
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Slightly larger minmax for fewer columns on smaller wide screens */
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             }
         }
 
@@ -250,7 +244,7 @@
                 font-size: 2.2rem;
             }
             .city-grid {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* 3 columns on most tablets */
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
                 gap: 25px;
             }
         }
@@ -287,7 +281,7 @@
                 font-size: 1.8rem;
             }
             .city-grid {
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* 2 columns on mobile/small tablets */
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
                 gap: 20px;
             }
             .city-card-image-wrapper {
@@ -333,7 +327,7 @@
                 font-size: 1.5rem;
             }
             .city-grid {
-                grid-template-columns: 1fr; /* Single column on very small screens */
+                grid-template-columns: 1fr;
                 gap: 15px;
             }
             .city-card-image-wrapper {
@@ -350,7 +344,7 @@
 </head>
 <body>
 
-    <!-- NAVBAR - Consistent with homepage and region page -->
+    <!-- NAVBAR -->
     <div class="navbar">
         <div class="logo-section">
             <a href="homepage.html">
@@ -587,9 +581,9 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Active state for navbar links
+           
             const navLinkItems = document.querySelectorAll('.nav-links .nav-link-item');
-            const currentPath = window.location.pathname.split('/').pop(); // Get just the filename
+            const currentPath = window.location.pathname.split('/').pop(); 
 
             navLinkItems.forEach(link => {
                 const linkHref = link.getAttribute('href');
@@ -601,29 +595,25 @@
                     link.classList.remove('active');
                 }
             });
-            // Ensure 'Places to See' link is active when on cities.html or specific city pages
             if (currentPath === 'cities.html' || currentPath === 'luzon-cities.html' || currentPath === 'visayas-cities.html' || currentPath === 'mindanao-cities.html') { 
                 document.getElementById('placesToSeeLink').classList.add('active');
             }
 
-            // --- Dynamic content display based on URL parameter (if any) ---
             const urlParams = new URLSearchParams(window.location.search);
             const regionParam = urlParams.get('region');
             const citiesPageTitle = document.getElementById('citiesPageTitle');
             const cityCards = document.querySelectorAll('.city-card');
             const cityGrid = document.getElementById('cityGrid');
 
-            // Default to showing only Mindanao cities if no region parameter or if region is Mindanao
             cityCards.forEach(card => {
                 if (card.dataset.region === 'Mindanao') {
                     card.style.display = 'flex';
                 } else {
-                    card.style.display = 'none'; // Hide non-Mindanao cities
+                    card.style.display = 'none'; 
                 }
             });
 
             if (regionParam) {
-                // If a specific region is passed, filter based on it
                 citiesPageTitle.textContent = `Cities in ${regionParam}`;
                 cityCards.forEach(card => {
                     if (card.dataset.region === regionParam) {
@@ -633,7 +623,6 @@
                     }
                 });
             } else {
-                // If no region parameter is present, explicitly set title for Mindanao
                 citiesPageTitle.textContent = 'Cities in Mindanao';
             }
         });
