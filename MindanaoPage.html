@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Places to See - Mindanao Cities</title>
+    <link rel="icon" href="Pics&Logos/logo.png" type="image/png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="navbarcss.css"> 
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+            overflow-x: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #ffffff;
+            scroll-behavior: smooth;
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 25px;
+            padding-bottom: 15px;
+            width: 100vw;
+            background-color: aliceblue;
+            position: fixed;
+            top: 0;
+            box-shadow: 10px 10px 12px rgba(67, 67, 68, 0.227);
+            z-index: 1000;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            height: 40px;
+        }
+
+        .search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-bar-input {
+            padding: 6px 35px 6px 30px;
+            border: 1px solid;
+            border-radius: 20px;
+            font-size: 14px;
+            width: 500px;
+            background-color: #ffffff;
+        }
+
+        .search-icon, .mic-icon {
+            position: absolute;
+            height: 16px;
+            width: 16px;
+            opacity: 0.6;
+        }
+
+        .search-icon {
+            left: 8px;
+        }
+
+        .mic-icon {
+            right: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 65px;
+            margin-left: auto;
+            margin-right: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-size: 13px;
+            color: #545454;
+            border-bottom: 2px solid transparent;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .nav-links a.active {
+            border-bottom: 2px solid #4a977e;
+            transform: scale(1.05);
+        }
+
+        .nav-links a:hover {
+            border-bottom: 2px solid #4a977e;
+            transform: scale(1.1);
+        }
+
+        .nav-icon {
+            height: 20px;
+            width: 20px;
+        }
+
+        .cities-content {
+            margin-top: 95px;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .cities-content h1 {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #333;
+            margin-bottom: 3rem;
+        }
+
+        .city-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-bottom: 50px;
+        }
+
+        .city-card {
+            background-color: aliceblue;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+            text-align: left;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .city-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .city-card-image-wrapper {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-top-left-radius: 1.5rem;
+            border-top-right-radius: 1.5rem;
+        }
+
+        .city-card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .city-card:hover .city-card-image {
+            transform: scale(1.05);
+        }
+
+        .city-card-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .city-card h2 {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 1.8rem;
+            color: #4a977e;
+            margin-top: 0;
+            margin-bottom: 0.8rem;
+        }
+
+        .city-card p {
+            font-size: 0.75rem;
+            line-height: 1.6;
+            color: #545454;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .city-card-link {
+            display: inline-block;
+            background-color: #4a977e;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+            text-align: center;
+            align-self: flex-start;
+        }
+
+        .city-card-link:hover {
+            background-color: #3b7a65;
+            transform: translateY(-2px);
+        }
+
+
+        @media (max-width: 1200px) {
+            .city-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+            .search-bar-input {
+                width: 350px;
+            }
+            .nav-links {
+                gap: 40px;
+                margin-right: 20px;
+            }
+            .cities-content h1 {
+                font-size: 2.2rem;
+            }
+            .city-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 25px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 15px;
+            }
+            .logo-section {
+                width: 100%;
+                justify-content: center;
+                margin-bottom: 15px;
+            }
+            .search-bar-input {
+                width: 100%;
+                max-width: 400px;
+            }
+            .nav-links {
+                width: 100%;
+                justify-content: space-around;
+                margin-top: 15px;
+                margin-right: 0;
+            }
+            .nav-links a {
+                margin-left: 0;
+                gap: 5px;
+            }
+            .cities-content {
+                margin-top: 150px;
+            }
+            .cities-content h1 {
+                font-size: 1.8rem;
+            }
+            .city-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 20px;
+            }
+            .city-card-image-wrapper {
+                height: 160px;
+            }
+            .city-card h2 {
+                font-size: 1.5rem;
+            }
+            .city-card p {
+                font-size: 0.9rem;
+            }
+            .city-card-link {
+                padding: 0.7rem 1.2rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 10px;
+            }
+            .search-bar-input {
+                font-size: 12px;
+                padding: 5px 30px 5px 25px;
+            }
+            .search-icon, .mic-icon {
+                height: 14px;
+                width: 14px;
+            }
+            .nav-links {
+                font-size: 11px;
+                gap: 20px;
+            }
+            .nav-icon {
+                height: 16px;
+                width: 16px;
+            }
+            .cities-content {
+                margin-top: 130px;
+                padding: 20px 10px;
+            }
+            .cities-content h1 {
+                font-size: 1.5rem;
+            }
+            .city-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            .city-card-image-wrapper {
+                height: 140px;
+            }
+            .city-card h2 {
+                font-size: 1.3rem;
+            }
+            .city-card p {
+                font-size: 0.85rem;
+            }
+        </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo-section">
+            <a href="#profile">
+                <img src="Pics&Logos/logo.png" alt="Logo" class="logo" onerror="this.onerror=null; this.src='https://placehold.co/40x40/ccc/000?text=Logo';">
+            </a>
+            <div class="search-wrapper">
+                <img src="Pics&Logos/search.png" class="search-icon" alt="Search Icon" onerror="this.onerror=null; this.src='https://placehold.co/16x16/ccc/000?text=S';">
+                <input type="text" class="search-bar-input" placeholder="Where do you want to go?">
+                <img src="Pics&Logos/microphone.png" class="mic-icon" alt="Mic Icon" onerror="this.onerror=null; this.src='https://placehold.co/16x16/ccc/000?text=M';">
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="homepage.html">
+                <img src="Pics&Logos/heart (1).png" alt="Icon" class="nav-icon" onerror="this.onerror=null; this.src='https://placehold.co/20x20/ccc/000?text=H';">
+            </a>
+            <a href="homepage.html" class="nav-link-item" id="homeLink">Home</a>
+                <div class="dropdown">
+    <a href="#" class="dropbtn nav-link-item" id="placesToSeeBtn">Places to See ▼</a>
+    <div class="dropdown-content" id="placesToSeeDropdown">
+        
+        <div class="dropdown-column">
+            <h2>Places to Visit</h2>
+            <h3>Luzon</h3>
+            <a href="#city-manila">Manila</a>
+            <a href="#city-quezon-city">Quezon City</a>
+            <a href="#city-baguio">Baguio</a>
+            <a href="#city-vigan">Vigan</a>
+            <a href="#city-subic">Subic</a>
+            <a href="#city-tagaytay">Tagaytay</a>
+            <a href="#city-batangas">Batangas</a>
+        </div>
+        <div class="dropdown-column">
+            <h2> &nbsp</h2>
+            <h3>Visayas</h3>
+            <a href="#city-cebu">Cebu City</a>
+            <a href="#city-boracay">Boracay</a>
+            <a href="#city-iloilo">Iloilo City</a>
+            <a href="#city-bacolod">Bacolod City</a>
+            <a href="#city-tacloban">Tacloban City</a>
+            <a href="#city-dumaguete">Dumaguete City</a>
+        </div>
+        <div class="dropdown-column">
+            <h2>&nbsp </h2>
+            <h3>Mindanao</h3>
+            <a href="#city-davao">Davao City</a>
+            <a href="#city-cagayan-de-oro">Cagayan de Oro</a>
+            <a href="#city-zamboanga">Zamboanga City</a>
+            <a href="#city-general-santos">General Santos</a>
+            <a href="#city-butuan">Butuan City</a>
+            <a href="#city-siargao">Siargao</a>
+        </div>
+    </div>
+</div>
+          
+            <a href="#" class="nav-link-item" id="profileLink">Profile</a>
+        </div>
+    </nav>
+
+    <div class="cities-content">
+        <h1 id="citiesPageTitle">Cities in Mindanao</h1>
+
+        <div class="city-grid" id="cityGrid">
+            <div class="city-card" data-region="Mindanao">
+                <div class="city-card-image-wrapper">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Davao_City_Skyline.jpg/1200px-Davao_City_Skyline.jpg" alt="Davao City" class="city-card-image" onerror="this.onerror=null; this.src='https://placehold.co/400x200/4a977e/ffffff?text=Davao+City';">
+                </div>
+                <div class="city-card-content">
+                    <h2>Davao City</h2>
+                    <p>
+                        Davao City, the "Crown Jewel of Mindanao," is known for its diverse culture, rich biodiversity, and as a major economic hub.
+                    </p>
+                    <a href="#" class="city-card-link">Explore Davao City</a>
+                </div>
+            </div>
+
+            <div class="city-card" data-region="Mindanao">
+                <div class="city-card-image-wrapper">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Cagayan_de_Oro_City_Hall.jpg/1200px-Cagayan_de_Oro_City_Hall.jpg" alt="Cagayan de Oro" class="city-card-image" onerror="this.onerror=null; this.src='https://placehold.co/400x200/4a977e/ffffff?text=Cagayan+de+Oro';">
+                </div>
+                <div class="city-card-content">
+                    <h2>Cagayan de Oro</h2>
+                    <p>
+                        Cagayan de Oro, the "City of Golden Friendship," is a prime destination for white water rafting and other adventures.
+                    </p>
+                    <a href="#" class="city-card-link">Explore Cagayan de Oro</a>
+                </div>
+            </div>
+
+            <div class="city-card" data-region="Mindanao">
+                <div class="city-card-image-wrapper">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Zamboanga_City_Hall.jpg/1200px-Zamboanga_City_Hall.jpg" alt="Zamboanga City" class="city-card-image" onerror="this.onerror=null; this.src='https://placehold.co/400x200/4a977e/ffffff?text=Zamboanga+City';">
+                </div>
+                <div class="city-card-content">
+                    <h2>Zamboanga City</h2>
+                    <p>
+                        Zamboanga City, the "Asia's Latin City," offers a unique blend of Spanish and Malay cultures, famous for its pink sand beach.
+                    </p>
+                    <a href="#" class="city-card-link">Explore Zamboanga City</a>
+                </div>
+            </div>
+
+            <div class="city-card" data-region="Mindanao">
+                <div class="city-card-image-wrapper">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/General_Santos_City_Hall.jpg/1200px-General_Santos_City_Hall.jpg" alt="General Santos" class="city-card-image" onerror="this.onerror=null; this.src='https://placehold.co/400x200/4a977e/ffffff?text=General+Santos';">
+                </div>
+                <div class="city-card-content">
+                    <h2>General Santos</h2>
+                    <p>
+                        General Santos City, the "Tuna Capital of the Philippines," is a bustling port city known for its vibrant fishing industry.
+                    </p>
+                    <a href="#" class="city-card-link">Explore General Santos</a>
+                </div>
+            </div>
+
+            <div class="city-card" data-region="Mindanao">
+                <div class="city-card-image-wrapper">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Butuan_City_Hall.jpg/1200px-Butuan_City_Hall.jpg" alt="Butuan City" class="city-card-image" onerror="this.onerror=null; this.src='https://placehold.co/400x200/4a977e/ffffff?text=Butuan+City';">
+                </div>
+                <div class="city-card-content">
+                    <h2>Butuan City</h2>
+                    <p>
+                        Butuan City, the "Timber City of the South," is a historical city with rich archaeological finds and natural attractions.
+                    </p>
+                    <a href="#" class="city-card-link">Explore Butuan City</a>
+                </div>
+            </div>
+
+            <div class="city-card" data-region="Mindanao">
+                <div class="city-card-image-wrapper">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Iligan_City_Hall.jpg/1200px-Iligan_City_Hall.jpg" alt="Iligan City" class="city-card-image" onerror="this.onerror=null; this.src='https://placehold.co/400x200/4a977e/ffffff?text=Iligan+City';">
+                </div>
+                <div class="city-card-content">
+                    <h2>Iligan City</h2>
+                    <p>
+                        Iligan City, the "City of Majestic Waterfalls," is home to over 20 waterfalls, including the famous Maria Cristina Falls.
+                    </p>
+                    <a href="#" class="city-card-link">Explore Iligan City</a>
+                </div>
+            </div>
+
+            <div class="city-card" data-region="Mindanao">
+                <div class="city-card-image-wrapper">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Dipolog_City_Hall.jpg/1200px-Dipolog_City_Hall.jpg" alt="Dipolog City" class="city-card-image" onerror="this.onerror=null; this.src='https://placehold.co/400x200/4a977e/ffffff?text=Dipolog+City';">
+                </div>
+                <div class="city-card-content">
+                    <h2>Dipolog City</h2>
+                    <p>
+                        Dipolog City, Zamboanga del Norte, is known for its charming sardine industry and a relaxed, natural environment.
+                    </p>
+                    <a href="#" class="city-card-link">Explore Dipolog City</a>
+                </div>
+            </div>
+            
+            <div class="city-card" data-region="Mindanao">
+                <div class="city-card-image-wrapper">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Koronadal_City_Hall.jpg/1200px-Koronadal_City_Hall.jpg" alt="Koronadal City" class="city-card-image" onerror="this.onerror=null; this.src='https://placehold.co/400x200/4a977e/ffffff?text=Koronadal+City';">
+                </div>
+                <div class="city-card-content">
+                    <h2>Koronadal City</h2>
+                    <p>
+                        Koronadal City, South Cotabato, is the regional center of SOCCSKSARGEN, known for its vibrant T'nalak Festival.
+                    </p>
+                    <a href="#" class="city-card-link">Explore Koronadal City</a>
+                </div>
+            </div>
+
+            <div class="city-card" data-region="Mindanao">
+                <div class="city-card-image-wrapper">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Pagadian_City_Hall.jpg/1200px-Pagadian_City_Hall.jpg" alt="Pagadian City" class="city-card-image" onerror="this.onerror=null; this.src='https://placehold.co/400x200/4a977e/ffffff?text=Pagadian+City';">
+                </div>
+                <div class="city-card-content">
+                    <h2>Pagadian City</h2>
+                    <p>
+                        Pagadian City, Zamboanga del Sur, is characterized by its rolling hills and a unique tilted tricycles.
+                    </p>
+                    <a href="#" class="city-card-link">Explore Pagadian City</a>
+                </div>
+            </div>
+
+            <div class="city-card" data-region="Mindanao">
+                <div class="city-card-image-wrapper">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Valencia_City_Hall.jpg/1200px-Valencia_City_Hall.jpg" alt="Valencia City" class="city-card-image" onerror="this.onerror=null; this.src='https://placehold.co/400x200/4a977e/ffffff?text=Valencia+City';">
+                </div>
+                <div class="city-card-content">
+                    <h2>Valencia City</h2>
+                    <p>
+                        Valencia City, Bukidnon, is an agricultural center and a gateway to the region's vast pineapple plantations.
+                    </p>
+                    <a href="#" class="city-card-link">Explore Valencia City</a>
+                </div>
+            </div>
+
+            <div class="city-card" data-region="Mindanao">
+                <div class="city-card-image-wrapper">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Cotabato_City_Hall.jpg/1200px-Cotabato_City_Hall.jpg" alt="Cotabato City" class="city-card-image" onerror="this.onerror=null; this.src='https://placehold.co/400x200/4a977e/ffffff?text=Cotabato+City';">
+                </div>
+                <div class="city-card-content">
+                    <h2>Cotabato City</h2>
+                    <p>
+                        Cotabato City, Maguindanao, is a historical and cultural center, home to grand mosques and vibrant markets.
+                    </p>
+                    <a href="#" class="city-card-link">Explore Cotabato City</a>
+                </div>
+            </div>
+
+            <div class="city-card" data-region="Mindanao">
+                <div class="city-card-image-wrapper">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Marawi_City_Hall.jpg/1200px-Marawi_City_Hall.jpg" alt="Marawi City" class="city-card-image" onerror="this.onerror=null; this.src='https://placehold.co/400x200/4a977e/ffffff?text=Marawi+City';">
+                </div>
+                <div class="city-card-content">
+                    <h2>Marawi City</h2>
+                    <p>
+                        Marawi City, Lanao del Sur, is the Islamic City of the South, rich in Maranao culture and traditions.
+                    </p>
+                    <a href="#" class="city-card-link">Explore Marawi City</a>
+                </div>
+            </div>
+
+            <div class="city-card" data-region="Mindanao">
+                <div class="city-card-image-wrapper">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Samal_Island_view.jpg/1200px-Samal_Island_view.jpg" alt="Island Garden City of Samal" class="city-card-image" onerror="this.onerror=null; this.src='https://placehold.co/400x200/4a977e/ffffff?text=Samal+Island';">
+                </div>
+                <div class="city-card-content">
+                    <h2>Island Garden City of Samal</h2>
+                    <p>
+                        The Island Garden City of Samal, Davao del Norte, is a popular resort island known for its white sand beaches and marine life.
+                    </p>
+                    <a href="#" class="city-card-link">Explore Samal Island</a>
+                </div>
+            </div>
+
+            <div class="city-card" data-region="Mindanao">
+                <div class="city-card-image-wrapper">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Tagum_City_Hall.jpg/1200px-Tagum_City_Hall.jpg" alt="Tagum City" class="city-card-image" onerror="this.onerror=null; this.src='https://placehold.co/400x200/4a977e/ffffff?text=Tagum+City';">
+                </div>
+                <div class="city-card-content">
+                    <h2>Tagum City</h2>
+                    <p>
+                        Tagum City, Davao del Norte, is an agricultural and commercial hub, famous for its annual Musikahan Festival.
+                    </p>
+                    <a href="#" class="city-card-link">Explore Tagum City</a>
+                </div>
+            </div>
+             <div class="city-card" data-region="Mindanao">
+                <div class="city-card-image-wrapper">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Digos_City_Hall.jpg/1200px-Digos_City_Hall.jpg" alt="Digos City" class="city-card-image" onerror="this.onerror=null; this.src='https://placehold.co/400x200/4a977e/ffffff?text=Digos+City';">
+                </div>
+                <div class="city-card-content">
+                    <h2>Digos City</h2>
+                    <p>
+                        Digos City, Davao del Sur, is a growing urban center, serving as a gateway to the majestic Mt. Apo.
+                    </p>
+                    <a href="#" class="city-card-link">Explore Digos City</a>
+                </div>
+            </div>
+             <div class="city-card" data-region="Mindanao">
+                <div class="city-card-image-wrapper">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Mati_City_Hall.jpg/1200px-Mati_City_Hall.jpg" alt="Mati City" class="city-card-image" onerror="this.onerror=null; this.src='https://placehold.co/400x200/4a977e/ffffff?text=Mati+City';">
+                </div>
+                <div class="city-card-content">
+                    <h2>Mati City</h2>
+                    <p>
+                        Mati City, Davao Oriental, is famous for its stunning Dahican Beach, a haven for skimboarding and surfing enthusiasts.
+                    </p>
+                    <a href="#" class="city-card-link">Explore Mati City</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinkItems = document.querySelectorAll('.nav-links .nav-link-item');
+            const currentPath = window.location.pathname.split('/').pop();
+
+            navLinkItems.forEach(link => {
+                const linkHref = link.getAttribute('href');
+                const linkFileName = linkHref.split('/').pop();
+
+                if (linkFileName === currentPath || (currentPath === '' && linkFileName === 'homepage.html')) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+            if (currentPath === 'cities.html' || currentPath === 'mindanao-cities.html') {
+                document.getElementById('placesToSeeLink').classList.add('active');
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const regionParam = urlParams.get('region');
+            const citiesPageTitle = document.getElementById('citiesPageTitle');
+            const cityCards = document.querySelectorAll('.city-card');
+            const cityGrid = document.getElementById('cityGrid');
+
+            cityCards.forEach(card => {
+                if (card.dataset.region === 'Mindanao') {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            if (regionParam) {
+                citiesPageTitle.textContent = `Cities in ${regionParam}`;
+                cityCards.forEach(card => {
+                    if (card.dataset.region === regionParam) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            } else {
+                citiesPageTitle.textContent = 'Cities in Mindanao';
+            }
+        });
+    </script>
+</body>
+</html>
