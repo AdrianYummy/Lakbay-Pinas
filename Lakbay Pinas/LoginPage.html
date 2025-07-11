@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+  <title>Login & Signup</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --linear-grad: linear-gradient(to right, #2d5a4c, #4a977e);
+      --grad-clr1: #2d5a4c;
+      --grad-clr2: #4a977e;
+    }
+
+    body {
+      position: relative;
+      margin: 0;
+      height: 100vh;
+      background-image: url("Pics&Logos/login.jpg");
+      background-size: cover;
+      background-position: center;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.3);
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 850px;
+      height: 500px;
+      background-color: #FFF;
+      box-shadow: 20px 30px 50px black;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .form-container {
+      position: absolute;
+      width: 60%;
+      height: 100%;
+      padding: 0px 40px;
+      transition: all 0.6s ease-in-out;
+    }
+
+    .sign-up-container {
+      opacity: 0;
+      z-index: 1;
+    }
+
+    .sign-in-container {
+      z-index: 2;
+    }
+
+    form {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0px 50px;
+    }
+
+    h1 {
+      color: var(--grad-clr1);
+    }
+
+    .social-container {
+      margin: 20px 0px;
+    }
+
+    .social-container a {
+      border: 1px solid #DDD;
+      border-radius: 50%;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0px 5px;
+      height: 40px;
+      width: 40px;
+    }
+
+    span {
+      font-size: 12px;
+    }
+
+    .infield {
+      position: relative;
+      margin: 8px 0px;
+      width: 100%;
+    }
+
+    .infield .icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888;
+      font-size: 14px;
+    }
+
+    .infield .togglePassword {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #888;
+      font-size: 14px;
+    }
+
+    .infield input {
+      width: 100%;
+      padding: 12px 12px 12px 36px;
+      background-color: #f3f3f3;
+      border: none;
+      outline: none;
+    }
+
+    label {
+      position: absolute;
+      left: 50%;
+      top: 100%;
+      transform: translateX(-50%);
+      width: 0%;
+      height: 2px;
+      background: var(--linear-grad);
+      transition: 0.3s;
+    }
+
+    input:focus ~ label {
+      width: 100%;
+    }
+
+    a {
+      color: darkblue;
+      font-size: 14px;
+      text-decoration: none;
+      margin: 15px 0px;
+    }
+
+    button {
+      cursor: pointer;
+      border-radius: 20px;
+      border: 1px solid var(--grad-clr1);
+      background: var(--grad-clr2);
+      color: #fff;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 12px 45px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .form-container button {
+      margin-top: 17px;
+      transition: 80ms ease-in;
+    }
+
+    .form-container button:hover {
+      background: #fff;
+      color: var(--grad-clr1);
+    }
+
+    .overlay-container {
+      position: absolute;
+      top: 0;
+      left: 60%;
+      width: 40%;
+      height: 100%;
+      overflow: hidden;
+      transition: transform 0.6s ease-in-out;
+      z-index: 9;
+    }
+
+    .overlay-panel button {
+      border: none;
+      background-color: transparent;
+    }
+
+    #overlayBtn {
+      position: absolute;
+      left: 50%;
+      top: 304px;
+      transform: translateX(-50%);
+      width: 145px;
+      height: 40px;
+      border: 1px solid #fff;
+      border-radius: 20px;
+      background: transparent;
+    }
+
+    .overlay {
+      position: relative;
+      background: var(--linear-grad);
+      color: #fff;
+      left: -150%;
+      height: 100%;
+      width: 250%;
+      transition: transform 0.6s ease-in-out;
+    }
+
+    .overlay-panel {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 0px 40px;
+      text-align: center;
+      height: 100%;
+      width: 340px;
+      transition: 0.6s ease-in-out;
+    }
+
+    .overlay-left {
+      right: 60%;
+      transform: translateX(-12%);
+    }
+
+    .overlay-right {
+      right: 0;
+      transform: translateX(0%);
+    }
+
+    .overlay-panel h1 {
+      color: #fff;
+    }
+
+    p {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 20px;
+      letter-spacing: 0.5px;
+      margin: 25px 0px 35px;
+    }
+
+    .right-panel-active .overlay-container {
+      transform: translateX(-150%);
+    }
+
+    .right-panel-active .overlay {
+      transform: translateX(50%);
+    }
+
+    .right-panel-active .overlay-left {
+      transform: translateX(25%);
+    }
+
+    .right-panel-active .overlay-right {
+      transform: translateX(35%);
+    }
+
+    .right-panel-active .sign-in-container {
+      transform: translateX(20%);
+      opacity: 0;
+    }
+
+    .right-panel-active .sign-up-container {
+      transform: translateX(66.7%);
+      opacity: 1;
+      z-index: 5;
+      animation: show 0.6s;
+    }
+
+    .sign-in-container,
+    .sign-up-container {
+      transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+    }
+
+    @keyframes show {
+      0%, 50% {
+        opacity: 0;
+        z-index: 1;
+      }
+      50.1%, 100% {
+        opacity: 1;
+        z-index: 5;
+      }
+    }
+
+    .btnScaled {
+      animation: scaleBtn 0.6s;
+    }
+
+    @keyframes scaleBtn {
+      0% {
+        width: 143.67px;
+      }
+      50% {
+        width: 250px;
+      }
+      100% {
+        width: 143.67px;
+      }
+    }
+
+    #message {
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="container">
+    <div class="form-container sign-up-container">
+      <form>
+        <h1>Create Account</h1>
+        <div class="social-container">
+          <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+          <a href="#" class="social"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social"><i class="fab fa-instagram"></i></a>
+        </div>
+        <span>or use your email for registration</span>
+        <div class="infield">
+          <i class="fas fa-user icon"></i>
+          <input type="text" id="signupUsername" placeholder="Name" required />
+          <label></label>
+        </div>
+        <div class="infield">
+          <i class="fas fa-envelope icon"></i>
+          <input type="email" placeholder="Email" required />
+          <label></label>
+        </div>
+        <div class="infield">
+          <i class="fas fa-lock icon"></i>
+          <input type="password" id="signupPassword" placeholder="Password" required />
+          <i class="fas fa-eye-slash togglePassword" toggle="#signupPassword"></i>
+          <label></label>
+        </div>
+        <div class="infield">
+          <i class="fas fa-lock icon"></i>
+          <input type="password" id="confirmPassword" placeholder="Confirm Password" required />
+          <i class="fas fa-eye-slash togglePassword" toggle="#confirmPassword"></i>
+          <label></label>
+        </div>
+        <button id="RegisBtn">Register Now!</button>
+      </form>
+    </div>
+    <div class="form-container sign-in-container">
+      <form id="loginForm">
+        <h1>Sign In</h1>
+        <div class="social-container">
+          <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+          <a href="#" class="social"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social"><i class="fab fa-instagram"></i></a>
+        </div>
+        <span>or use your account</span>
+        <div class="infield">
+          <i class="fas fa-envelope icon"></i>
+          <input type="text" id="loginUsername" placeholder="Email" required />
+          <label></label>
+        </div>
+        <div class="infield">
+          <i class="fas fa-lock icon"></i>
+          <input type="password" id="passwordInput" placeholder="Password" required />
+          <i class="fas fa-eye-slash togglePassword" toggle="#passwordInput"></i>
+          <label></label>
+        </div>
+        <a href="#">Forgot your password?</a>
+        <button type="submit">Sign In</button>
+      </form>
+    </div>
+    <div class="overlay-container" id="overlayCon">
+      <div class="overlay">
+        <div class="overlay-panel overlay-left">
+          <h1>Welcome Back!</h1>
+          <p>To keep connected with us please login with your personal info</p>
+          <button>Sign In</button>
+        </div>
+        <div class="overlay-panel overlay-right">
+          <h1>Hello, Friend!</h1>
+          <p>Enter your personal details and start journey with us</p>
+          <button>Register</button>
+        </div>
+      </div>
+      <button id="overlayBtn"></button>
+    </div>
+    <p id="message"></p>
+  </div>
+
+  <script>
+    const togglePasswordIcons = document.querySelectorAll('.togglePassword');
+togglePasswordIcons.forEach(icon => {
+  icon.addEventListener('click', () => {
+    const inputSelector = icon.getAttribute('toggle');
+    const input = document.querySelector(inputSelector);
+    const isPassword = input.getAttribute('type') === 'password';
+    input.setAttribute('type', isPassword ? 'text' : 'password');
+    icon.classList.toggle('fa-eye-slash');
+    icon.classList.toggle('fa-eye');
+  });
+});
+
+const RegisBtn = document.getElementById('RegisBtn');
+const container = document.getElementById('container');
+const signUpForm = document.querySelector('.sign-up-container form');
+const signInForm = document.getElementById('loginForm');
+const message = document.getElementById('message');
+
+
+message.style.position = 'absolute';
+message.style.top = '90%'; 
+message.style.left = '30%';
+message.style.transform = 'translateX(-50%)';
+message.style.zIndex = '1000';
+message.style.fontSize = '14px';
+message.style.display = 'none'; 
+
+function showMessage(text, color) {
+  message.textContent = text;
+  message.style.color = color;
+  message.style.display = 'block';
+  setTimeout(() => {
+    message.style.display = 'none';
+  }, 2000); 
+}
+
+RegisBtn.addEventListener('click', function (e) {
+  e.preventDefault();
+  const username = document.getElementById('signupUsername').value;
+  const password = document.getElementById('signupPassword').value;
+  const confirm = document.getElementById('confirmPassword').value;
+
+  if (password !== confirm) {
+    showMessage('Passwords do not match!', 'red');
+    return;
+  }
+
+  localStorage.setItem('user_' + username, password);
+  showMessage('Register successful! You can now sign in.', 'green');
+  container.classList.remove('right-panel-active');
+});
+
+signInForm.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const username = document.getElementById('loginUsername').value;
+  const password = document.getElementById('passwordInput').value;
+  const storedPassword = localStorage.getItem('user_' + username);
+
+  if (storedPassword === password) {
+    localStorage.setItem('loggedInUser', username);
+    window.location.href = 'homepage.html';
+  } else {
+    showMessage('Login failed. Check your credentials.', 'red');
+  }
+});
+
+const overlayBtn = document.getElementById('overlayBtn');
+overlayBtn.addEventListener('click', () => {
+  container.classList.toggle('right-panel-active');
+  overlayBtn.classList.remove('btnScaled');
+  requestAnimationFrame(() => overlayBtn.classList.add('btnScaled'));
+});
+
+  </script>
+</body>
+</html>

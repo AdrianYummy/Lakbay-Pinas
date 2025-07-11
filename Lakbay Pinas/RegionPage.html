@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lakbay Pinas</title>
+    <link rel="icon" href="Pics&Logos/logo.png" type="image/png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="navbarcss.css"> 
+    <script src="navbarjs.js" defer></script> 
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow-x: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+            scroll-behavior: smooth;
+            background-color: #4a977e;
+        }
+
+        
+
+        .region-section {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            padding: 50px 20px;
+            text-align: center;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-top: calc(70px + 50px);
+        }
+
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            filter: brightness(0.7);
+            transition: opacity 1s ease-in-out;
+            opacity: 1;
+        }
+
+    
+        .main-title-region {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+        }
+
+        .slider-container {
+            perspective: 1200px;
+            width: 100%;
+            max-width: 700px;
+            height: 350px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .region-card-wrapper {
+            position: absolute;
+            width: 300px;
+            height: 250px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            transition: transform 0.7s cubic-bezier(0.25, 0.1, 0.25, 1),
+                                opacity 0.7s ease-out,
+                                filter 0.7s ease-out,
+                                z-index 0.7s step-end;
+            cursor: pointer;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            flex-shrink: 0;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+        }
+
+        .region-card-wrapper.active {
+            opacity: 1;
+            transform: rotateY(0deg) translateX(0) translateZ(200px) scale(1.15);
+            filter: brightness(100%);
+            z-index: 10;
+        }
+
+        .region-card-wrapper.prev {
+            opacity: 0.8;
+            transform: rotateY(60deg) translateX(-300px) translateZ(-150px) scale(0.9);
+            filter: brightness(70%);
+            z-index: 5;
+        }
+
+        .region-card-wrapper.next {
+            opacity: 0.8;
+            transform: rotateY(-60deg) translateX(300px) translateZ(-150px) scale(0.9);
+            filter: brightness(70%);
+            z-index: 5;
+        }
+
+        .region-card-wrapper.far-prev {
+            opacity: 0.2;
+            transform: rotateY(120deg) translateX(-500px) translateZ(-300px) scale(0.8);
+            filter: brightness(40%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .region-card-wrapper.far-next {
+            opacity: 0.2;
+            transform: rotateY(-120deg) translateX(500px) translateZ(-300px) scale(0.8);
+            filter: brightness(40%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .region-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 1.5rem;
+        }
+
+        .region-description {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px 15px;
+            background-color: transparent;
+            color: #ffffff;
+            font-size: 0.85rem;
+            text-align: center;
+            z-index: 2;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+        }
+
+        .region-card-wrapper.active .region-description {
+            opacity: 1;
+        }
+
+        .bottom-nav-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 500px;
+            padding: 0 1rem;
+            margin: 2rem auto 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .region-name-display {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            text-align: center;
+            padding: 0.8rem 2rem;
+            background-color: #ffffff;
+            border-radius: 9999px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: background-color 0.3s ease;
+            min-width: 150px;
+            margin: 0 1rem;
+            text-shadow: none;
+        }
+
+        .nav-button-region {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 3rem;
+            cursor: pointer;
+            outline: none;
+            transition: color 0.2s ease, transform 0.2s ease;
+            padding: 0 0.5rem;
+            line-height: 1;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+        }
+
+        .nav-button-region:hover {
+            color: #eee;
+            transform: scale(1.1);
+        }
+
+        .nav-button-region:active {
+            transform: scale(0.9);
+        }
+
+        @media (max-width: 1024px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+            .search-bar-input {
+                width: 350px;
+            }
+            .nav-links {
+                gap: 40px;
+                margin-right: 20px;
+            }
+            .main-title-region {
+                font-size: 2.5rem;
+            }
+            .slider-container {
+                max-width: 600px;
+                height: 300px;
+                perspective: 1000px;
+            }
+            .region-card-wrapper {
+                width: 250px;
+                height: 200px;
+            }
+            .region-card-wrapper.active {
+                transform: rotateY(0deg) translateX(0) translateZ(150px) scale(1.1);
+            }
+            .region-card-wrapper.prev {
+                transform: rotateY(50deg) translateX(-200px) translateZ(-70px) scale(0.9);
+            }
+            .region-card-wrapper.next {
+                transform: rotateY(-50deg) translateX(200px) translateZ(-70px) scale(0.9);
+            }
+            .region-card-wrapper.far-prev {
+                transform: rotateY(100deg) translateX(-350px) translateZ(-150px) scale(0.7);
+            }
+            .region-card-wrapper.far-next {
+                transform: rotateY(-100deg) translateX(350px) translateZ(-150px) scale(0.7);
+            }
+            .region-image {
+                height: 100%;
+            }
+            .region-description {
+                font-size: 0.8rem;
+                padding: 8px 12px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 15px;
+            }
+            .logo-section {
+                width: 100%;
+                justify-content: center;
+                margin-bottom: 15px;
+            }
+            .search-bar-input {
+                width: 100%;
+                max-width: 400px;
+            }
+            .nav-links {
+                width: 100%;
+                justify-content: space-around;
+                margin-top: 15px;
+                margin-right: 0;
+            }
+            .nav-links a {
+                margin-left: 0;
+                gap: 5px;
+            }
+
+            .region-section {
+                margin-top: 150px;
+            }
+            .main-title-region {
+                font-size: 2.2rem;
+            }
+            .slider-container {
+                height: 280px;
+                max-width: 90%;
+                perspective: 800px;
+            }
+            .region-card-wrapper {
+                width: 220px;
+                height: 180px;
+                border-radius: 1rem;
+            }
+            .region-card-wrapper.active {
+                transform: rotateY(0deg) translateX(0) translateZ(100px) scale(1.1);
+            }
+            .region-card-wrapper.prev {
+                transform: rotateY(55deg) translateX(-150px) translateZ(-70px) scale(0.9);
+            }
+            .region-card-wrapper.next {
+                transform: rotateY(-55deg) translateX(150px) translateZ(-70px) scale(0.9);
+            }
+            .region-card-wrapper.far-prev {
+                transform: rotateY(110deg) translateX(-280px) translateZ(-120px) scale(0.7);
+            }
+            .region-card-wrapper.far-next {
+                transform: rotateY(-110deg) translateX(280px) translateZ(-120px) scale(0.7);
+            }
+            .region-name-display {
+                font-size: 1.2rem;
+                padding: 0.6rem 1.5rem;
+            }
+            .nav-button-region {
+                font-size: 2.5rem;
+            }
+            .region-image {
+                height: 100%;
+            }
+            .region-description {
+                font-size: 0.75rem;
+                padding: 6px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 10px;
+            }
+            .search-bar-input {
+                font-size: 12px;
+                padding: 5px 30px 5px 25px;
+            }
+            .search-icon, .mic-icon {
+                height: 14px;
+                width: 14px;
+            }
+            .nav-links {
+                font-size: 11px;
+                gap: 20px;
+            }
+            .nav-icon {
+                height: 16px;
+                width: 16px;
+            }
+
+            .region-section {
+                margin-top: 130px;
+            }
+            .main-title-region {
+                font-size: 1.8rem;
+            }
+            .slider-container {
+                height: 200px;
+                perspective: 600px;
+            }
+            .region-card-wrapper {
+                width: 180px;
+                height: 140px;
+                border-radius: 0.75rem;
+            }
+            .region-card-wrapper.active {
+                transform: rotateY(0deg) translateX(0) translateZ(80px) scale(1.1);
+            }
+            .region-card-wrapper.prev {
+                transform: rotateY(60deg) translateX(-120px) translateZ(-50px) scale(0.85);
+            }
+            .region-card-wrapper.next {
+                transform: rotateY(-60deg) translateX(120px) translateZ(-50px) scale(0.85);
+            }
+            .region-card-wrapper.far-prev {
+                transform: rotateY(120deg) translateX(-220px) translateZ(-100px) scale(0.65);
+            }
+            .region-card-wrapper.far-next {
+                transform: rotateY(-120deg) translateX(220px) translateZ(-100px) scale(0.65);
+            }
+            .region-name-display {
+                font-size: 1rem;
+                padding: 0.5rem 1rem;
+            }
+            .nav-button-region {
+                font-size: 2rem;
+            }
+            .region-image {
+                height: 100%;
+            }
+            .region-description {
+                font-size: 0.65rem;
+                padding: 4px 8px;
+            }
+        }
+
+        .search-message {
+            position: fixed;
+            top: 70px; 
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #f44336; 
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            text-align: center;
+            white-space: nowrap; 
+        }
+
+        .search-message.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+       
+
+
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo-section">
+            <a href="#profile">
+                <img src="Pics&Logos/logo.png" alt="Logo" class="logo" onerror="this.onerror=null; this.src='https://placehold.co/40x40/ccc/000?text=Logo';">
+            </a>
+            <div class="search-wrapper">
+                <img src="Pics&Logos/search.png" class="search-icon" alt="Search Icon" onerror="this.onerror=null; this.src='https://placehold.co/16x16/ccc/000?text=S';">
+                <input type="text" class="search-bar-input" placeholder="Where do you want to go?">
+                <img src="Pics&Logos/microphone.png" class="mic-icon" alt="Mic Icon" onerror="this.onerror=null; this.src='https://placehold.co/16x16/ccc/000?text=M';">
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="bookmarks.html">
+                <img src="Pics&Logos/cart.png"alt="Icon" class="nav-icon" onerror="this.onerror=null; this.src='https://placehold.co/20x20/ccc/000?text=H';">
+            </a>
+            <a href="homepage.html" class="nav-link-item" id="homeLink">Home</a>
+                <div class="dropdown">
+    <a href="#" class="dropbtn nav-link-item" id="placesToSeeBtn">Places to See ▼</a>
+    <div class="dropdown-content" id="placesToSeeDropdown">
+        <div class="dropdown-column">
+            <h2>Places to Visit</h2>
+            <h3>Luzon</h3>
+            <a href="./Cities/Manila.html" id="link-manila">Manila</a>
+            <a href="./Cities/QuezonCity.html" id="link-quezon-city">Quezon City</a>
+            <a href="./Cities/Baguio.html" id="link-baguio">Baguio</a>
+            <a href="./Cities/Vigan.html" id="link-vigan">Vigan</a>
+            <a href="./Cities/Subic.html" id="link-subic">Subic</a>
+            <a href="./Cities/Tagaytay.html" id="link-tagaytay">Tagaytay</a>
+            <a href="./Cities/Batangas.html" id="link-batangas">Batangas</a>
+        </div>
+        <div class="dropdown-column">
+            <h2> &nbsp</h2>
+            <h3>Visayas</h3>
+            <a href="./Cities/CebuCity.html" id="link-cebu-city">Cebu City</a>
+            <a href="./Cities/Boracay.html" id="link-boracay">Boracay</a>
+            <a href="./Cities/IloiloCity.html" id="link-iloilo-city">Iloilo City</a>
+            <a href="./Cities/BacolodCity.html" id="link-bacolod-city">Bacolod City</a>
+            <a href="./Cities/TaclobanCity.html" id="link-tacloban-city">Tacloban City</a>
+            <a href="./Cities/DumagueteCity.html" id="link-dumaguete-city">Dumaguete City</a>
+        </div>
+        <div class="dropdown-column">
+            <h2>&nbsp </h2>
+            <h3>Mindanao</h3>
+            <a href="./Cities/DavaoCity.html" id="link-davao-city">Davao City</a>
+            <a href="./Cities/CagayanDeOro.html" id="link-cagayan-de-oro">Cagayan de Oro</a>
+            <a href="./Cities/ZamboangaCity.html" id="link-zamboanga-city">Zamboanga City</a>
+            <a href="./Cities/GeneralSantos.html" id="link-general-santos">General Santos</a>
+            <a href="./Cities/ButuanCity.html" id="link-butuan-city">Butuan City</a>
+            <a href="./Cities/Siargao.html" id="link-siargao">Siargao</a>
+        </div>
+    </div>
+</div>
+ </div>
+            
+            <img src="./Pics&Logos/user.png" alt="User Profile" class="user-pic" onclick="toggleMenu()">
+        <div class="sub-menu-wrap" id="subMenu">
+            <div class="sub-menu">
+                <div class="user-info">
+                    <img src="Pics&Logos/user.png" alt="User Profile">
+                    <h2>Jamal Aldrino</h2>
+                </div>
+                <hr>
+                <a href="#" class="sub-menu-link">
+                    <img src="Pics&Logos/profile.png" alt="#">
+                    <p>Edit Profile</p>
+                    <span>></span>
+                </a>
+                <a href="#" class="sub-menu-link">
+                    <img src="Pics&Logos/setting.png" alt="#">
+                    <p>Settings & Privacy</p>
+                    <span>></span>
+                </a>
+                <a href="#" class="sub-menu-link">
+                    <img src="Pics&Logos/help.png" alt="#">
+                    <p>Help & Support</p>
+                    <span>></span>
+                </a>
+                <a href="#" class="sub-menu-link" id="logoutLink">
+                    <img src="Pics&Logos/logout.png" alt="Logout" onerror="this.onerror=null; this.src='https://placehold.co/40x40/ccc/000?text=L';">
+                    <p>Logout</p>
+                    <span>></span>
+                </a>
+            </div>
+        </div>
+       
+    </nav>
+
+    <div class="region-section" id="region-section">
+        <video id="backgroundVideo" class="video-background" autoplay loop muted playsinline></video>
+        <div class="dark-overlay-video"></div>
+
+        <h1 class="main-title-region fade-in">Select which Region</h1>
+
+        <div class="slider-container fade-up">
+        </div>
+
+        <div class="bottom-nav-area fade-up">
+            <button id="leftButton" class="nav-button-region">‹</button>
+            <span id="regionNameDisplay" class="region-name-display"></span>
+            <button id="rightButton" class="nav-button-region">›</button>
+        </div>
+    </div>
+    
+    <div id="search-message" class="search-message"></div>
+
+    
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const regions = [
+                {
+                    name: 'Luzon',
+                    image: 'https://deih43ym53wif.cloudfront.net/mayon-volcano-luzon-philippines-shutterstock_551532472_bfa8ed9aaf.jpeg',
+                    video: 'https://videos.pexels.com/video-files/5222769/5222769-hd_1920_960_24fps.mp4',
+                    link: 'LuzonPage.html',
+                    description: 'Explore the vibrant cities, historical sites, and natural wonders of Luzon, the largest island group.'
+                },
+                {
+                    name: 'Visayas',
+                    image: 'https://www.bambootravel.co.uk/files/img_cache/43119/1400__1502294512_Boholwide.jpg?1502294744',
+                    video: 'https://videos.pexels.com/video-files/32007422/13641809_1920_1080_30fps.mp4',
+                    link: 'VisayasPage.html',
+                    description: 'Discover the stunning beaches, rich marine life, and lively festivals of the central Philippine islands.'
+                },
+                {
+                    name: 'Mindanao',
+                    image: 'https://deih43ym53wif.cloudfront.net/Socorro-Philippines-Sohoton-Cove-Bucas-Grande-Siargao-shutterstock_2076124846.jpg_9c9755fe0e.jpg',
+                    video: 'https://cdn.pixabay.com/video/2019/06/17/24515-343454414_tiny.mp4',
+                    link: 'MindanaoPage.html',
+                    description: 'Experience the diverse cultures, majestic mountains, and pristine natural landscapes of Mindanao.'
+                }
+            ];
+
+            let regionCurrentIndex = 0;
+            const regionSliderContainer = document.querySelector('.slider-container');
+            const regionNameDisplay = document.getElementById('regionNameDisplay');
+            const leftButton = document.getElementById('leftButton');
+            const rightButton = document.getElementById('rightButton');
+            const backgroundVideo = document.getElementById('backgroundVideo');
+
+            let autoSlideInterval;
+
+            function createRegionCard(region) {
+                const cardWrapper = document.createElement('div');
+                cardWrapper.className = 'region-card-wrapper';
+                cardWrapper.dataset.name = region.name;
+
+                const img = document.createElement('img');
+                img.src = region.image;
+                img.alt = `Image of ${region.name}`;
+                img.className = 'region-image';
+                img.onerror = function() {
+                    this.src = 'https://placehold.co/300x250/ccc/000?text=Image+Not+Found';
+                    this.alt = 'Image not found';
+                };
+                cardWrapper.appendChild(img);
+
+                const descriptionText = document.createElement('p');
+                descriptionText.className = 'region-description';
+                descriptionText.textContent = region.description;
+                cardWrapper.appendChild(descriptionText);
+
+                cardWrapper.addEventListener('click', () => {
+                    if (region.link) {
+                        window.location.href = region.link;
+                    }
+                });
+
+                return cardWrapper;
+            }
+
+            function renderRegionCards() {
+                regionSliderContainer.innerHTML = '';
+                regions.forEach(region => {
+                    const card = createRegionCard(region);
+                    regionSliderContainer.appendChild(card);
+                });
+            }
+
+            function updateRegionSlider() {
+                const cards = document.querySelectorAll('.region-card-wrapper');
+                regionNameDisplay.textContent = regions[regionCurrentIndex].name;
+
+                if (backgroundVideo && regions[regionCurrentIndex].video) {
+                    backgroundVideo.src = regions[regionCurrentIndex].video;
+                    backgroundVideo.load();
+                    backgroundVideo.play().catch(error => {
+                        console.warn('Video autoplay prevented or failed:', error);
+                    });
+                }
+
+                cards.forEach((card, index) => {
+                    card.classList.remove('active', 'prev', 'next', 'far-prev', 'far-next');
+
+                    let position = (index - regionCurrentIndex + regions.length) % regions.length;
+
+                    if (position === 0) {
+                        card.classList.add('active');
+                    } else if (position === 1) {
+                        card.classList.add('next');
+                    } else if (position === regions.length - 1) {
+                        card.classList.add('prev');
+                    } else {
+                        if (index < regionCurrentIndex) {
+                            card.classList.add('far-prev');
+                        } else {
+                            card.classList.add('far-next');
+                        }
+                    }
+
+                    if (card.classList.contains('active')) {
+                        card.style.zIndex = 10;
+                    } else if (card.classList.contains('prev') || card.classList.contains('next')) {
+                        card.style.zIndex = 5;
+                    } else {
+                        card.style.zIndex = 1;
+                    }
+                });
+            }
+
+            function autoAdvanceRegionSlider() {
+                regionCurrentIndex = (regionCurrentIndex + 1) % regions.length;
+                updateRegionSlider();
+            }
+
+            function startAutoSlide(intervalTime = 5000) {
+                clearInterval(autoSlideInterval);
+                autoSlideInterval = setInterval(autoAdvanceRegionSlider, intervalTime);
+            }
+
+            function showNextRegion() {
+                regionCurrentIndex = (regionCurrentIndex + 1) % regions.length;
+                updateRegionSlider();
+                startAutoSlide();
+            }
+
+            function showPrevRegion() {
+                regionCurrentIndex = (regionCurrentIndex - 1 + regions.length) % regions.length;
+                updateRegionSlider();
+                startAutoSlide();
+            }
+
+            rightButton.addEventListener('click', showNextRegion);
+            leftButton.addEventListener('click', showPrevRegion);
+
+            renderRegionCards();
+            updateRegionSlider();
+            startAutoSlide();
+
+            const placesToSeeBtn = document.getElementById('placesToSeeBtn');
+            const dropdown = document.querySelector('.dropdown');
+            const navLinkItems = document.querySelectorAll('.nav-links .nav-link-item');
+            const currentPath = window.location.pathname;
+
+            const searchInput = document.querySelector('.search-bar-input');
+            const searchIcon = document.querySelector('.search-icon');
+            const searchMessageElement = document.getElementById('search-message');
+
+            let cityMap = {};
+
+            const populateCityMap = () => {
+                document.querySelectorAll('.dropdown-content a').forEach(anchor => {
+                    const cityName = anchor.textContent.trim().toLowerCase();
+                    const cityHref = anchor.getAttribute('href');
+                    if (cityName && cityHref.endsWith('.html')) { 
+                        cityMap[cityName] = cityHref;
+                    }
+                });
+                console.log('City Map populated:', cityMap);
+            };
+
+            populateCityMap(); 
+
+            const displaySearchMessage = (message, isError = true) => {
+                searchMessageElement.textContent = message;
+                searchMessageElement.style.backgroundColor = isError ? '#f44336' : '#4a977e';
+                searchMessageElement.classList.add('show');
+                setTimeout(() => {
+                    searchMessageElement.classList.remove('show');
+                }, 3000);
+            };
+
+            const performSearch = () => {
+                const query = searchInput.value.trim().toLowerCase();
+                console.log('Search query (normalized to lowercase):', query);
+                if (query) {
+                    if (cityMap[query]) {
+                        const targetUrl = cityMap[query];
+                        console.log('City found. Navigating to:', targetUrl);
+                        window.location.href = targetUrl;
+                    } else {
+                        console.log('City not found in map for query:', query);
+                        displaySearchMessage(`"${searchInput.value}" not found. Please try another city.`);
+                    }
+                } else {
+                    console.log('Empty search query.');
+                    displaySearchMessage("Please enter a city to search.");
+                }
+            };
+
+            searchInput.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    performSearch();
+                }
+            });
+
+            searchIcon.addEventListener('click', performSearch);
+
+
+            const removeAllActiveClasses = () => {
+                navLinkItems.forEach(link => link.classList.remove('active'));
+            };
+
+            const initializeActiveState = () => {
+                const fullCurrentPath = window.location.pathname;
+                const currentPageFilename = fullCurrentPath.split('/').pop(); 
+                console.log('Current page filename for active state:', currentPageFilename);
+
+                if (currentPageFilename === 'homepage.html' || currentPageFilename === '' || currentPageFilename === 'index.html') {
+                    document.getElementById('homeLink').classList.add('active');
+                } else {
+                    let foundActiveCityLink = false;
+                    for (const cityName in cityMap) {
+                        const cityPageFilenameInMap = cityMap[cityName].split('/').pop(); 
+                        if (cityPageFilenameInMap === currentPageFilename) {
+                            const linkId = `link-${cityName.replace(/\s/g, '-')}`; 
+                            const activeLinkElement = document.getElementById(linkId);
+                            if (activeLinkElement) {
+                                activeLinkElement.classList.add('active');
+                                placesToSeeBtn.classList.add('active'); 
+                                foundActiveCityLink = true;
+                                console.log('Active city link found for:', cityName);
+                                break;
+                            }
+                        }
+                    }
+                    if (!foundActiveCityLink) {
+                        if (currentPath.includes('RegionPage.html') || currentPageFilename === 'LuzonPage.html' || currentPageFilename === 'VisayasPage.html' || currentPageFilename === 'MindanaoPage.html') {
+                            placesToSeeBtn.classList.add('active');
+                            console.log('Region/Places to See page is active.');
+                        }
+                    }
+                }
+            };
+
+            const toggleDropdown = (event) => {
+                event.preventDefault();
+                const isShowing = dropdown.classList.contains('show');
+                
+                removeAllActiveClasses();
+
+                if (!isShowing) {
+                    dropdown.classList.add('show');
+                    placesToSeeBtn.classList.add('active'); 
+                } else {
+                    dropdown.classList.remove('show');
+                    initializeActiveState(); 
+                }
+            };
+
+            const handleNavLinkClick = function(event) {
+                if (this.getAttribute('href') && this.getAttribute('href').endsWith('.html')) {
+                    removeAllActiveClasses();
+                    this.classList.add('active');
+                    dropdown.classList.remove('show');
+                    placesToSeeBtn.classList.remove('active'); 
+                } else if (this.getAttribute('href') && this.getAttribute('href').startsWith('#')) {
+                    event.preventDefault(); 
+                    removeAllActiveClasses();
+                    this.classList.add('active');
+                    dropdown.classList.remove('show');
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+
+                    if (this.closest('.dropdown-content')) {
+                        placesToSeeBtn.classList.add('active');
+                    } else {
+                        placesToSeeBtn.classList.remove('active');
+                    }
+
+                } else {
+                    event.preventDefault();
+                    removeAllActiveClasses();
+                    this.classList.add('active');
+                    dropdown.classList.remove('show');
+                    placesToSeeBtn.classList.remove('active');
+                }
+            };
+
+            const closeDropdownOnOutsideClick = (event) => {
+                if (!event.target.matches('.dropbtn') && !event.target.closest('.dropdown-content') && !event.target.closest('.search-wrapper')) {
+                    if (dropdown.classList.contains('show')) {
+                        dropdown.classList.remove('show');
+                        initializeActiveState();
+                    }
+                }
+            };
+
+            const setupDropdownLinks = () => {
+                document.querySelectorAll('.dropdown-content a').forEach(anchor => {
+
+                    anchor.addEventListener('click', function(e) {
+                        if (this.getAttribute('href').endsWith('.html')) {
+                        } else if (this.getAttribute('href').startsWith('#')) {
+                            e.preventDefault();
+                            const targetId = this.getAttribute('href');
+                            const targetElement = document.querySelector(targetId);
+                            if (targetElement) {
+                                targetElement.scrollIntoView({ behavior: 'smooth' });
+                                dropdown.classList.remove('show');
+                                placesToSeeBtn.classList.add('active'); 
+                            }
+                        }
+                    });
+                });
+            };
+
+            placesToSeeBtn.addEventListener('click', toggleDropdown);
+            navLinkItems.forEach(link => {
+                link.addEventListener('click', handleNavLinkClick); 
+            });
+            window.addEventListener('click', closeDropdownOnOutsideClick);
+
+            initializeActiveState();
+            setupDropdownLinks();
+        });
+    </script>
+
+</body>
+</html>
